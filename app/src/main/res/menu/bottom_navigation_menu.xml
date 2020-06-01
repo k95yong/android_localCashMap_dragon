@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item android:title="즐겨찾기"
+        android:id="@+id/bni_bookmark"
+        android:icon="@drawable/bottom_heart"/>
+    <item android:title="홈"
+        android:id="@+id/bni_home"
+        android:icon="@drawable/bottom_home"/>
+    <item android:title="이벤트"
+        android:id="@+id/bni_event"
+        android:icon="@drawable/bottom_cal"/>
+    <item android:title="공지사항"
+        android:id="@+id/bni_notice"
+        android:icon="@drawable/bottom_alert"/>
+</menu>

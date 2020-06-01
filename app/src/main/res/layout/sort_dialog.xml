@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/sort_prin_back"
+    >
+    <ImageView
+        android:id="@+id/iv_sort_prior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sort_prin_text"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        />
+    <ImageView
+        android:id="@+id/iv_sort_line"
+        android:layout_below="@id/iv_sort_prior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sort_line"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/iv_sort_prior"
+        android:layout_marginTop="20dp"
+        >
+        <RadioGroup
+            android:id="@+id/dialog_rg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            >
+            <RadioButton
+                android:id="@+id/rb_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=" 거리순"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:button="@drawable/radio_button_unsel"
+                android:layout_margin="5dp"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_association"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:button="@drawable/radio_button_unsel"
+                android:text=" 관련도순"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </RadioGroup>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_sort_line2"
+        android:layout_below="@id/ll_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sort_line"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_centerHorizontal="true"
+        />
+    <LinearLayout
+        android:layout_below="@id/iv_sort_line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="30dp"
+        >
+
+
+
+        <ImageButton
+            android:id="@+id/ibtn_dialog_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/dialog_no"
+            android:background="@color/white"
+            android:scaleType="fitCenter"
+            />
+        <ImageButton
+            android:id="@+id/ibtn_dialog_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/dialog_yes"
+            android:background="@color/white"
+            android:scaleType="fitCenter"
+            />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
