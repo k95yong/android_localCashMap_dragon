@@ -1,11 +1,18 @@
 package com.softsquared.template.src;
+
 import android.app.ProgressDialog;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
+
 import com.softsquared.template.R;
+import com.softsquared.template.src.main.models.SearchResult;
+
+import java.util.ArrayList;
 
 public class BaseFragment extends Fragment {
     public ProgressDialog mProgressDialog;
+
     public final String str[] = {
             "음식점", "제과", "약국", "숙박",
             "미용", "의류", "병원", "보험",
@@ -14,9 +21,11 @@ public class BaseFragment extends Fragment {
             "서비스", "여행", "레저", "취미",
             "음료", "위생", "생활", "문구"
     };
+
     public void showCustomToast(final String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getActivity());
@@ -25,12 +34,14 @@ public class BaseFragment extends Fragment {
         }
         mProgressDialog.show();
     }
+
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
-    public class Place{
+
+    public class Place {
         String title;
         String address;
         String tel;

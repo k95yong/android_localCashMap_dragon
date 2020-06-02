@@ -18,10 +18,11 @@ import com.softsquared.template.src.main.models.SearchResult;
 
 import java.util.ArrayList;
 
-public class RecyclerPlaceListItemAdapter extends RecyclerView.Adapter<RecyclerPlaceListItemAdapter.ViewHolder>{
+public class RecyclerPlaceListItemAdapter extends RecyclerView.Adapter<RecyclerPlaceListItemAdapter.ViewHolder> {
     private ArrayList<SearchResult> mList = null;
     Context mContext;
-    public RecyclerPlaceListItemAdapter(Context mContext, ArrayList<SearchResult> list){
+
+    public RecyclerPlaceListItemAdapter(Context mContext, ArrayList<SearchResult> list) {
         this.mContext = mContext;
         mList = list;
     }
@@ -67,7 +68,7 @@ public class RecyclerPlaceListItemAdapter extends RecyclerView.Adapter<RecyclerP
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_title, tv_address, tv_tel, tv_item_distance;
         LinearLayout ll_item_call_to_place;
@@ -84,6 +85,7 @@ public class RecyclerPlaceListItemAdapter extends RecyclerView.Adapter<RecyclerP
         }
 
     }
+
     public void addItem(SearchResult ipt) {
         mList.add(ipt);
     }

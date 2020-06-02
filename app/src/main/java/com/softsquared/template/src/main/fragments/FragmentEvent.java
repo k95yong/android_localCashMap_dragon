@@ -16,10 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.adapters.EventRecyclerAdapter;
-import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.MainService;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
+import com.softsquared.template.src.main.adapters.EventRecyclerAdapter;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
+import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
 import com.softsquared.template.src.main.models.EventResponse;
@@ -29,22 +30,25 @@ import com.softsquared.template.src.main.models.StoreSearchResponse;
 
 import java.util.ArrayList;
 
-public class FragmentEvent extends BaseFragment implements MainActivityView {
+public class FragmentEvent extends BaseFragment implements MainActivityView, OnBackPressedListener {
 
-    public FragmentEvent(MainNavigationActivity mainNavigationActivity){
+    public FragmentEvent(MainNavigationActivity mainNavigationActivity) {
         this.mainNavigationActivity = mainNavigationActivity;
     }
+
     RecyclerView rv_event;
     ArrayList<EventResponse.Result> mList;
     ImageButton mIbtn_back_from_event;
     Context mContext;
     MainNavigationActivity mainNavigationActivity;
     BottomNavigationView bottomNavigationView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_event, container, false);
+        mainNavigationActivity.setOnBackPressedListener(this);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_event, container, false);
         rv_event = rootView.findViewById(R.id.rv_event_list);
         mIbtn_back_from_event = rootView.findViewById(R.id.ibtn_back_from_event);
         this.bottomNavigationView = mainNavigationActivity.bottomNavigationView;
@@ -59,13 +63,15 @@ public class FragmentEvent extends BaseFragment implements MainActivityView {
 
         return rootView;
     }
-    public void getEventList(){
+
+    public void getEventList() {
         MainService mainService = new MainService(this);
         mainService.getEvent();
     }
+
     @Override
     public void getEvent(EventResponse res) {
-        if(res.getCode() == 100) {
+        if (res.getCode() == 100) {
             mList = res.getResult();
             Log.e("mList size:", mList.size() + "");
             LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -110,4 +116,9 @@ public class FragmentEvent extends BaseFragment implements MainActivityView {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.e("onBackInEvent", "왜여기야");
+        bottomNavigationView.setSelectedItemId(R.id.bni_home);
+    }
 }

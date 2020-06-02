@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     app:dragEdge="right"
     app:mode="same_level"
-    android:layout_marginTop="3dp"
     android:layout_marginRight="7dp"
     >
 
@@ -29,54 +28,37 @@
     </LinearLayout>
 
     <!--Main Layout-->
+
     <LinearLayout
+        android:id="@+id/ll_bookmark_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        >
+        android:background="@drawable/card_back"
+        android:orientation="horizontal">
         <LinearLayout
-            android:id="@+id/ll_bookmark_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
             android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/card_back"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_item_bookmark_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_alignParentStart="true"
-                        android:text="매장이름"
-                        android:textColor="#000000"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tv_item_bookmark_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:text="매장 주소 123-123"
-                    android:textColor="#000000"
-                    android:textSize="14dp" />
-
-
-            </LinearLayout>
+            >
+            <TextView
+                android:fontFamily="@font/nanumbarungothicbold"
+                android:id="@+id/tv_item_bookmark_title"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:text="매장이름"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+            <TextView
+                android:fontFamily="@font/nanumbarungothic"
+                android:id="@+id/tv_item_bookmark_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="매장 주소 123-123"
+                android:textColor="#000000"
+                android:textSize="14dp" />
         </LinearLayout>
     </LinearLayout>
 

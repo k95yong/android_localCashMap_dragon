@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white">
     <TextView
+        android:fontFamily="@font/nanumbarungothicbold"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:text="지역화폐지도"
@@ -39,8 +40,10 @@
             android:layout_height="35dp"
             android:layout_below="@id/ibtn_back_to_main"
             android:layout_marginBottom="10dp"
+            android:layout_centerVertical="true"
             >
             <TextView
+                android:fontFamily="@font/nanumbarungothicbold"
                 android:id="@+id/tv_place_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -53,18 +56,22 @@
             <ImageButton
                 android:id="@+id/ibtn_regitst_my_place"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
-                android:layout_toLeftOf="@id/ibtn_exit"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/ibtn_share_place"
                 android:background="@color/transparent"
-                android:src="@drawable/ic_heart" />
+                android:src="@drawable/ic_heart"
+                android:layout_margin="8dp"
+                />
             <ImageButton
-                android:id="@+id/ibtn_exit"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/ic_exit"
+                android:id="@+id/ibtn_share_place"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/place_share"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@color/transparent"
+                android:layout_margin="8dp"
                 />
         </RelativeLayout>
 
@@ -84,6 +91,7 @@
             android:orientation="vertical"
             >
             <TextView
+                android:fontFamily="@font/nanumbarungothic"
                 android:id="@+id/tv_place_address"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -107,6 +115,7 @@
 
                 <TextView
                     android:id="@+id/tv_place_phone_number"
+                    android:fontFamily="@font/nanumbarungothic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="010-5052-6394"

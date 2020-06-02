@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.MainService;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
@@ -30,7 +30,8 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
     ViewGroup rootView;
     ImageButton mIbtn_back_from_notice_content;
     BottomNavigationView bottomNavigationView;
-    public FragmentNoticeContent(MainNavigationActivity mainNavigationActivity, int content_no){
+
+    public FragmentNoticeContent(MainNavigationActivity mainNavigationActivity, int content_no) {
         this.mainNavigationActivity = mainNavigationActivity;
         this.content_no = content_no;
     }
@@ -38,7 +39,7 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup)inflater.inflate(R.layout.fragment_notification_content, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_notification_content, container, false);
         getNoticeContent(content_no);
         mIbtn_back_from_notice_content = rootView.findViewById(R.id.ibtn_back_from_notice_content);
         this.bottomNavigationView = mainNavigationActivity.bottomNavigationView;
@@ -52,9 +53,9 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
         return rootView;
     }
 
-    void getNoticeContent(int no){
+    void getNoticeContent(int no) {
         MainService mainService = new MainService(this);
-        Log.e("notice_no", content_no+"");
+        Log.e("notice_no", content_no + "");
         mainService.getNoticeContent(no);
     }
 
@@ -91,7 +92,7 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
     @Override
     public void getNoticeContent(NoticeContentResponse res) {
         Log.e("getNoticeContentmsg", res.getMessage());
-        if(res.getCode() == 100){
+        if (res.getCode() == 100) {
             String title = res.getResult().getTitle();
             String time = res.getResult().getTime();
             String content = res.getResult().getContent();

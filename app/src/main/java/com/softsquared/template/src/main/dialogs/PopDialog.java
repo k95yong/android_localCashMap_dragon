@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -31,6 +29,7 @@ public class PopDialog extends Dialog implements MainActivityView {
     private SharedPreferences SPreferences;
     ImageView mIv_event_content;
     MainService mainService;
+
     public PopDialog(@NonNull Context context) {
         super(context);
         this.context = context;
@@ -54,7 +53,7 @@ public class PopDialog extends Dialog implements MainActivityView {
         mBtn_not_open_today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceManager.setBoolean(context, "pop_up_flag",false);
+                PreferenceManager.setBoolean(context, "pop_up_flag", false);
                 dismiss();
             }
         });
@@ -99,7 +98,7 @@ public class PopDialog extends Dialog implements MainActivityView {
 
     @Override
     public void getEventContent(EventContentResponse res) {
-        if(res.getCode() == 100){
+        if (res.getCode() == 100) {
 
             String content = res.getResult().getImage();
 

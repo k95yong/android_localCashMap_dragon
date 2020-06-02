@@ -17,7 +17,7 @@ import com.softsquared.template.src.main.models.NoticeResponse;
 
 import java.util.ArrayList;
 
-public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAdapter.ViewHolder>{
+public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAdapter.ViewHolder> {
     private ArrayList<NoticeResponse.Result> mList = null;
     Context mContext;
     MainNavigationActivity mainNavigationActivity;
@@ -60,9 +60,10 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAd
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title, tv_date;
         LinearLayout ll_notice_button;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_notice_title);

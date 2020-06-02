@@ -41,6 +41,7 @@
             android:layout_marginLeft="30dp"
             >
             <RadioButton
+                android:fontFamily="@font/nanumbarungothic"
                 android:id="@+id/rb_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -52,6 +53,7 @@
                 />
 
             <RadioButton
+                android:fontFamily="@font/nanumbarungothic"
                 android:id="@+id/rb_association"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

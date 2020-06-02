@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.softsquared.template.R;
-import com.softsquared.template.src.main.items.CatListItem;
 import com.softsquared.template.src.main.fragments.FragmentHome;
+import com.softsquared.template.src.main.items.CatListItem;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class CatListRecyclerAdapter extends RecyclerView.Adapter<CatListRecycler
                 "서비스", "여행", "레저", "취미",
                 "음료", "위생", "생활", "문구"
         };
-        for(int i=0;i<str.length;i++){
+        for (int i = 0; i < str.length; i++) {
             CatListItem catListItem = new CatListItem(str[i]);
             this.mList.add(catListItem);
         }
@@ -67,9 +67,10 @@ public class CatListRecyclerAdapter extends RecyclerView.Adapter<CatListRecycler
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title;
         RelativeLayout rl_cat_list;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_cat_list_title);

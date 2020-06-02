@@ -67,6 +67,7 @@
         android:layout_marginBottom="50dp"
         >
         <TextView
+            android:fontFamily="@font/nanumbarungothicbold"
             android:id="@+id/tv_notice_content_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,6 +87,7 @@
             app:layout_goneMarginTop="5dp"
             />
         <TextView
+            android:fontFamily="@font/nanumbarungothic"
             android:id="@+id/tv_notice_content_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,6 +97,7 @@
             android:layout_margin="15dp"
             />
         <TextView
+            android:fontFamily="@font/nanumbarungothic"
             android:id="@+id/notice_content_contents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

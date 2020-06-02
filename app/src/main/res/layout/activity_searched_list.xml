@@ -24,6 +24,7 @@
             android:layout_marginTop="7dp"
             android:src="@drawable/ic_back" />
         <TextView
+            android:fontFamily="@font/nanumbarungothicbold"
             android:id="@+id/tv_cat_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -57,6 +58,7 @@
             android:src="@drawable/reverse_triangle"
             android:layout_gravity="center_vertical"/>
         <TextView
+            android:fontFamily="@font/nanumbarungothic"
             android:id="@+id/order_principle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

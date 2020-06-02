@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.softsquared.template.R;
-import com.softsquared.template.src.main.dialogs.SortDialog;
 import com.softsquared.template.src.main.adapters.RecyclerPlaceListItemAdapter;
+import com.softsquared.template.src.main.dialogs.SortDialog;
 import com.softsquared.template.src.main.models.SearchResult;
 
 import java.util.ArrayList;
@@ -76,21 +76,19 @@ public class SearchedListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mSortDialog = new SortDialog(mContext, R.style.CustomDialog,
-                new SortDialog.ICustomDialogEventListener() {
-                    @Override
-                    public void customDialogEvent(int valueYouWantToSendBackToTheActivity) {
-                        if(valueYouWantToSendBackToTheActivity == 1){
-                            mRvPlaceList.setAdapter(new RecyclerPlaceListItemAdapter(getApplicationContext(), mList));
-                            mOrder_principle.setText("거리순");
-                        }
-                        else if(valueYouWantToSendBackToTheActivity == 0){
-                            mRvPlaceList.setAdapter(new RecyclerPlaceListItemAdapter(getApplicationContext(), mList2));
-                            mOrder_principle.setText("관련도순");
-                        }
-                        else{
-                        }
-                    }
-                });
+                        new SortDialog.ICustomDialogEventListener() {
+                            @Override
+                            public void customDialogEvent(int valueYouWantToSendBackToTheActivity) {
+                                if (valueYouWantToSendBackToTheActivity == 1) {
+                                    mRvPlaceList.setAdapter(new RecyclerPlaceListItemAdapter(getApplicationContext(), mList));
+                                    mOrder_principle.setText("거리순");
+                                } else if (valueYouWantToSendBackToTheActivity == 0) {
+                                    mRvPlaceList.setAdapter(new RecyclerPlaceListItemAdapter(getApplicationContext(), mList2));
+                                    mOrder_principle.setText("관련도순");
+                                } else {
+                                }
+                            }
+                        });
                 mSortDialog.show();
             }
         });
@@ -107,7 +105,8 @@ public class SearchedListActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                 int totalCount = recyclerView.getAdapter().getItemCount();
-                if (lastPosition == totalCount) { }
+                if (lastPosition == totalCount) {
+                }
             }
         });
 

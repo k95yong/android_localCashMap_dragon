@@ -19,6 +19,7 @@ public class BaseActivity extends AppCompatActivity {
             "서비스", "여행", "레저", "취미",
             "음료", "위생", "생활", "문구"
     };
+
     public void showCustomToast(final String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -43,7 +44,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onStop();
         hideProgressDialog();
     }
-    public class Place{
+
+    public class Place {
         String title;
         String address;
         String tel;

@@ -1,10 +1,10 @@
 package com.softsquared.template.src.main.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.softsquared.template.R;
 
@@ -17,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         splash();
 
     }
+
     private void splash() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

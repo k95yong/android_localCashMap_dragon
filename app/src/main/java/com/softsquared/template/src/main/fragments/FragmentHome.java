@@ -1,5 +1,6 @@
 package com.softsquared.template.src.main.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +26,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.LocationServices;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.activities.CategoryActivity;
 import com.softsquared.template.src.main.MainService;
-import com.softsquared.template.src.main.activities.PlaceInfoActivity;
-import com.softsquared.template.src.main.dialogs.PopDialog;
 import com.softsquared.template.src.main.PreferenceManager;
+import com.softsquared.template.src.main.activities.CategoryActivity;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
+import com.softsquared.template.src.main.activities.PlaceInfoActivity;
 import com.softsquared.template.src.main.activities.SearchedListActivity;
 import com.softsquared.template.src.main.adapters.CatListRecyclerAdapter;
+import com.softsquared.template.src.main.dialogs.PopDialog;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
+import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
 import com.softsquared.template.src.main.models.EventResponse;
@@ -60,21 +61,21 @@ import java.util.ArrayList;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.INVISIBLE;
 
-public class FragmentHome extends BaseFragment implements MainActivityView, MapView.MapViewEventListener {
+public class FragmentHome extends BaseFragment implements MainActivityView, MapView.MapViewEventListener, OnBackPressedListener {
     final int RADIUS_CAT = 500;
     final int RADIUS_STORE = 3000;
+    long backKeyPressedTime;
 
-    public FragmentHome() { }
+    public FragmentHome() {
+    }
 
     MapCircle mapCircle;
     Context mContext;
-    ImageButton mIbtn_side_menu, mIbtn_search, btnCurrentPositionInfo, mIbtn_zoom_in, mIbtn_zoom_out, mIbtn_more_category;
-    DrawerLayout mDrawer_layout;
+    ImageButton mIbtn_search, btnCurrentPositionInfo, mIbtn_zoom_in, mIbtn_zoom_out, mIbtn_more_category;
     EditText mEt_search_key;
     static TextView txtCurrentPositionInfo;
     LocationListener mLocationListener;
-    LinearLayout mLl_show_list, mLl_research, mLl_notice_button, mLl_event_button, mLl_bookmark_button;
-    DrawerLayout mDl_drawer_main;
+    LinearLayout mLl_show_list, mLl_research;
     boolean firstFlag, research_flag;
     int searchFlag;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -94,6 +95,7 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     public ArrayList<SearchResult> mStoreList = new ArrayList<>();
     public ArrayList<SearchResult> mStoreList2 = new ArrayList<>();
     public String cur_cat_name = "", cur_store_name = "";
+    MainNavigationActivity mainNavigationActivity;
     PopDialog popDialog;
     RecyclerView mRv_cat_list;
 
@@ -104,15 +106,20 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
+        mainNavigationActivity = (MainNavigationActivity) getActivity();
+        mainNavigationActivity.setOnBackPressedListener(this);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         searchFlag = -1;
         research_flag = false;
         firstFlag = true;
-        if(firstFlag){
+        getLocationPermission();
+        if (firstFlag) {
             showProgressDialog();
         }
         mLocationListener = new LocationListener() {
+
             public void onLocationChanged(Location location) {
+                getLocation();
                 mLongitude = location.getLongitude();
                 mLatitude = location.getLatitude();
                 altitude = location.getAltitude();
@@ -127,26 +134,27 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
                 //lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
             }
 
-            public void onProviderDisabled(String provider) { }
-            public void onProviderEnabled(String provider) { }
-            public void onStatusChanged(String provider, int status, Bundle extras) { }
+            public void onProviderDisabled(String provider) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
         };
 
-        mDl_drawer_main = rootView.findViewById(R.id.dl_drawer_main);
-        mIbtn_side_menu = rootView.findViewById(R.id.ibtn_side_menu);
-        mDrawer_layout = rootView.findViewById(R.id.dl_drawer_main);
         mIbtn_search = rootView.findViewById(R.id.ibtn_search);
         mIbtn_zoom_in = rootView.findViewById(R.id.ibtn_zoom_in);
         mIbtn_zoom_out = rootView.findViewById(R.id.ibtn_zoom_out);
         mIbtn_more_category = rootView.findViewById(R.id.ibtn_more_category);
         mEt_search_key = rootView.findViewById(R.id.et_search_key);
         mLl_show_list = rootView.findViewById(R.id.ll_show_list);
-        mLl_show_list.setVisibility(INVISIBLE);
+        if((mCatList == null || mCatList.size() == 0) && (mStoreList==null || mStoreList.size() == 0)){
+            mLl_show_list.setVisibility(INVISIBLE);
+        }
         mLl_research = rootView.findViewById(R.id.ll_research);
         mLl_research.setVisibility(INVISIBLE);
-        mLl_notice_button = rootView.findViewById(R.id.ll_notice_button);
-        mLl_event_button = rootView.findViewById(R.id.ll_event_button);
-        mLl_bookmark_button = rootView.findViewById(R.id.ll_bookmark_button);
         mRv_cat_list = rootView.findViewById(R.id.rv_cat_list);
         mapViewContainer = rootView.findViewById(R.id.map_view);
         txtCurrentPositionInfo = rootView.findViewById(R.id.tv_cur_location);
@@ -199,10 +207,10 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
             @Override
             public void onClick(View v) {
                 getLocation();
+                getCompleteAddressString(mContext, mLatitude, mLongitude);
                 mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mLatitude, mLongitude), true);
             }
         });
-
 
         mIbtn_zoom_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,15 +234,6 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
             }
         });
 
-        mIbtn_side_menu.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mDrawer_layout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawer_layout.openDrawer(Gravity.LEFT);
-                }
-                mDrawer_layout.openDrawer(Gravity.LEFT);
-            }
-        });
         mEt_search_key.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -282,7 +281,7 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     @Override
     public void onResume() {
         super.onResume();
-        getLocation();
+
         if (PlaceInfoActivity.mapViewContainer != null) {
             PlaceInfoActivity.mapViewContainer.removeAllViews();
         }
@@ -302,6 +301,8 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
         mapView.setMapViewEventListener(this);
         mapView.setPOIItemEventListener(piel);
         setDaumMapCurrentMarker_my_location(mLatitude, mLongitude, "현재위치");
+        getCompleteAddressString(mContext, mLatitude, mLongitude);
+        getLocation();
         getCompleteAddressString(mContext, mLatitude, mLongitude);
     }
 
@@ -333,17 +334,15 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
 
     public void getLocation() {
         try {
-            if (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
+            //getLocationPermission();
             //txtCurrentPositionInfo.setText("수신중..");
             // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                    5000, // 통지사이의 최소 시간간격 (miliSecond)
+                    1000, // 통지사이의 최소 시간간격 (miliSecond)
                     5, // 통지사이의 최소 변경거리 (m)
                     mLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                    5000, // 통지 시간 간격
+                    1000, // 통지 시간 간격
                     5, // 통지 거리 간격
                     mLocationListener);
             //txtCurrentPositionInfo.setText("위치정보 미수신중");
@@ -361,10 +360,12 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
             public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
                 txtCurrentPositionInfo.setText(s);
             }
+
             @Override
-            public void onReverseGeoCoderFailedToFindAddress(MapReverseGeoCoder mapReverseGeoCoder) { }
+            public void onReverseGeoCoderFailedToFindAddress(MapReverseGeoCoder mapReverseGeoCoder) {
+            }
         };
-        MapReverseGeoCoder reverseGeoCoder = new MapReverseGeoCoder("82967c534ccf6d551c69d7a9a2d5ecea", mapPoint, reverseGeoCodingResultListener, (Activity)context);
+        MapReverseGeoCoder reverseGeoCoder = new MapReverseGeoCoder("82967c534ccf6d551c69d7a9a2d5ecea", mapPoint, reverseGeoCodingResultListener, (Activity) context);
         reverseGeoCoder.startFindingAddress();
 
         return;
@@ -404,18 +405,20 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     }
 
     @Override
-    public void validateSuccess(String text) { }
+    public void validateSuccess(String text) {
+    }
 
     @Override
-    public void validateFailure(String message) { }
+    public void validateFailure(String message) {
+    }
 
     @Override
     public void getStoreSearchResult(StoreSearchResponse res) {
         Toast.makeText(getActivity(), res.getMessage() + "", Toast.LENGTH_LONG).show();
         searchFlag = 1;
+        research_flag = true;
         if (res.getCode() == 100) {
             mLl_show_list.setVisibility(View.VISIBLE);
-            research_flag = true;
             ArrayList<SearchResult> result = res.getStoreSearchResult();
             ArrayList<SearchResult> result2 = res.getStoreSearchResult2();
             mStoreList = new ArrayList<>();
@@ -439,7 +442,8 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     }
 
     @Override
-    public void getNotice(NoticeResponse res) { }
+    public void getNotice(NoticeResponse res) {
+    }
 
     @Override
     public void getCategorySearchResult(CategorySearchResponse res) {
@@ -471,13 +475,16 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     }
 
     @Override
-    public void getEvent(EventResponse res) { }
+    public void getEvent(EventResponse res) {
+    }
 
     @Override
-    public void getNoticeContent(NoticeContentResponse res) { }
+    public void getNoticeContent(NoticeContentResponse res) {
+    }
 
     @Override
-    public void getEventContent(EventContentResponse res) { }
+    public void getEventContent(EventContentResponse res) {
+    }
 
     public void makeCatMarker(ArrayList<SearchResult> list) {
         for (int i = 0; i < list.size(); i++) {
@@ -505,7 +512,8 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
 
     @Override
     public void onMapViewInitialized(MapView mapView) {
-        hideProgressDialog();
+        Log.e("Map상태", "onMapViewInitialized");
+        //hideProgressDialog();
     }
 
     @Override
@@ -514,31 +522,42 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
             mLl_research.setVisibility(View.VISIBLE);
         }
     }
-    @Override
-    public void onMapViewZoomLevelChanged(MapView mapView, int i) { }
 
     @Override
-    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+    }
 
     @Override
-    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+    }
 
     @Override
-    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+    }
 
     @Override
-    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+    }
 
     @Override
-    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+    }
 
     @Override
-    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) { }
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+    }
 
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+        Log.e("Map상태", "onMapViewMoveFinished");
+        hideProgressDialog();
+        getLocation();
+    }
 
     MapView.POIItemEventListener piel = new MapView.POIItemEventListener() {
         @Override
-        public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) { }
+        public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        }
 
         @Override
         public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
@@ -580,10 +599,12 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
         }
 
         @Override
-        public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) { }
+        public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+        }
 
         @Override
-        public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) { }
+        public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+        }
     };
 
     void makeCircle(double lat, double lon, int radius) {
@@ -593,5 +614,28 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
                 Color.TRANSPARENT,
                 Color.parseColor("#50c4c2ff"));
         mapView.addCircle(mapCircle);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e("onBack", "눌림");
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            showCustomToast("한번 더 누르면 종료됩니다.");
+            return;
+        } else {
+            getActivity().finish();
+        }
+    }
+
+    public void getLocationPermission() {
+        if (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        }
     }
 }

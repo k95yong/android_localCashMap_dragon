@@ -16,10 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.MainService;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.adapters.NoticeRecyclerAdapter;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
+import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
 import com.softsquared.template.src.main.models.EventResponse;
@@ -29,10 +30,11 @@ import com.softsquared.template.src.main.models.StoreSearchResponse;
 
 import java.util.ArrayList;
 
-public class FragmentNotice extends BaseFragment implements MainActivityView {
-    public FragmentNotice(MainNavigationActivity mainNavigationActivity){
+public class FragmentNotice extends BaseFragment implements MainActivityView, OnBackPressedListener {
+    public FragmentNotice(MainNavigationActivity mainNavigationActivity) {
         this.mainNavigationActivity = mainNavigationActivity;
     }
+
     RecyclerView rv_notice;
     ArrayList<NoticeResponse.Result> mList;
     Context mContext;
@@ -44,7 +46,8 @@ public class FragmentNotice extends BaseFragment implements MainActivityView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_notification, container, false);
+        mainNavigationActivity.setOnBackPressedListener(this);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_notification, container, false);
         rv_notice = rootView.findViewById(R.id.rv_notice_list);
         mIbtn_back_from_notice = rootView.findViewById(R.id.ibtn_back_from_notice);
         getNoticeList();
@@ -57,14 +60,15 @@ public class FragmentNotice extends BaseFragment implements MainActivityView {
         });
         return rootView;
     }
-    void getNoticeList(){
+
+    void getNoticeList() {
         MainService mainService = new MainService(this);
         mainService.getNotice();
     }
 
     @Override
     public void getNotice(NoticeResponse res) {
-        if(res.getCode() == 100) {
+        if (res.getCode() == 100) {
             mList = res.getResult();
             Log.e("mList size:", mList.size() + "");
             LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -107,5 +111,10 @@ public class FragmentNotice extends BaseFragment implements MainActivityView {
     @Override
     public void getEventContent(EventContentResponse res) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        bottomNavigationView.setSelectedItemId(R.id.bni_home);
     }
 }

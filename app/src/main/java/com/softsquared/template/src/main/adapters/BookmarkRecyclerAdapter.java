@@ -16,8 +16,9 @@ import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseActivity;
-import com.softsquared.template.src.main.activities.PlaceInfoActivity;
 import com.softsquared.template.src.main.PreferenceManager;
+import com.softsquared.template.src.main.activities.PlaceInfoActivity;
+import com.softsquared.template.src.main.fragments.FragmentHome;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class BookmarkRecyclerAdapter extends RecyclerView.Adapter<BookmarkRecycl
     public ArrayList<BaseActivity.Place> mList = null;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     PreferenceManager preferenceManager = new PreferenceManager();
+
     public BookmarkRecyclerAdapter(Context context, ArrayList<BaseActivity.Place> list) {
         this.context = context;
         this.mList = list;
@@ -59,6 +61,10 @@ public class BookmarkRecyclerAdapter extends RecyclerView.Adapter<BookmarkRecycl
                 intent.putExtra("lat", mList.get(i).getLat());
                 intent.putExtra("lon", mList.get(i).getLon());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if(FragmentHome.mapViewContainer != null){
+                    FragmentHome.mapViewContainer.removeAllViews();
+                }
+
                 context.startActivity(intent);
             }
         });

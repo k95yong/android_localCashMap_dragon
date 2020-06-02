@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.MainService;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
@@ -33,7 +33,7 @@ public class FragmentEventContent extends BaseFragment implements MainActivityVi
     ImageButton mIbtn_back_from_event_content;
     BottomNavigationView bottomNavigationView;
 
-    public FragmentEventContent(MainNavigationActivity mainNavigationActivity, int content_no){
+    public FragmentEventContent(MainNavigationActivity mainNavigationActivity, int content_no) {
         this.mainNavigationActivity = mainNavigationActivity;
         this.content_no = content_no;
     }
@@ -41,7 +41,7 @@ public class FragmentEventContent extends BaseFragment implements MainActivityVi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup)inflater.inflate(R.layout.fragment_event_content, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_event_content, container, false);
         getEventContent(content_no);
         mIbtn_back_from_event_content = rootView.findViewById(R.id.ibtn_back_from_event_content);
         this.bottomNavigationView = mainNavigationActivity.bottomNavigationView;
@@ -56,9 +56,9 @@ public class FragmentEventContent extends BaseFragment implements MainActivityVi
         return rootView;
     }
 
-    void getEventContent(int no){
+    void getEventContent(int no) {
         MainService mainService = new MainService(this);
-        Log.e("event_no", content_no+"");
+        Log.e("event_no", content_no + "");
         mainService.getEventContent(no);
     }
 
@@ -100,7 +100,7 @@ public class FragmentEventContent extends BaseFragment implements MainActivityVi
     @Override
     public void getEventContent(EventContentResponse res) {
         Log.e("getNoticeContentmsg", res.getMessage());
-        if(res.getCode() == 100){
+        if (res.getCode() == 100) {
             String title = res.getResult().getTitle();
             String time = res.getResult().getTime();
             String content = res.getResult().getImage();

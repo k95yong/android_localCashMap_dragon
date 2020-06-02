@@ -17,16 +17,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseActivity;
 import com.softsquared.template.src.BaseFragment;
-import com.softsquared.template.src.main.adapters.BookmarkRecyclerAdapter;
-import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.PreferenceManager;
+import com.softsquared.template.src.main.activities.MainNavigationActivity;
+import com.softsquared.template.src.main.adapters.BookmarkRecyclerAdapter;
+import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
 
 import java.util.ArrayList;
 
-public class FragmentBookmark extends BaseFragment {
-    public FragmentBookmark(MainNavigationActivity mainNavigationActivity){
+public class FragmentBookmark extends BaseFragment implements OnBackPressedListener {
+    public FragmentBookmark(MainNavigationActivity mainNavigationActivity) {
         this.mainNavigationActivity = mainNavigationActivity;
     }
+
     MainNavigationActivity mainNavigationActivity;
     RecyclerView rv_bookmark;
     ArrayList<BaseActivity.Place> mList;
@@ -39,7 +41,7 @@ public class FragmentBookmark extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_bookmark, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bookmark, container, false);
         rv_bookmark = rootView.findViewById(R.id.rv_bookmark_list);
         mIbtn_back_from_bookmark = rootView.findViewById(R.id.ibtn_back_from_bookmark);
         mList = PreferenceManager.getBookMarkList(mContext);
@@ -57,20 +59,25 @@ public class FragmentBookmark extends BaseFragment {
         });
 
 
-
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("FragmentBookmark","resumed");
-        Log.e("ListSize in frag be:",mList.size()+"");
+        mainNavigationActivity.setOnBackPressedListener(this);
+        Log.e("FragmentBookmark", "resumed");
+        Log.e("ListSize in frag be:", mList.size() + "");
         mList = PreferenceManager.getBookMarkList(mContext);
-        Log.e("ListSize in frag af:",mList.size()+"");
+        Log.e("ListSize in frag af:", mList.size() + "");
         bookmarkRecyclerAdapter = new BookmarkRecyclerAdapter(mContext, mList);
 
         bookmarkRecyclerAdapter.notifyDataSetChanged();
         rv_bookmark.setAdapter(bookmarkRecyclerAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        bottomNavigationView.setSelectedItemId(R.id.bni_home);
     }
 }

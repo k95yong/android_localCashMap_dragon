@@ -1,7 +1,6 @@
 package com.softsquared.template.src.main.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class GridCategoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView==null)
+        if (convertView == null)
             convertView = inf.inflate(layout, null);
 
         TextView tv = (TextView) convertView.findViewById(R.id.tv_cat_name);
