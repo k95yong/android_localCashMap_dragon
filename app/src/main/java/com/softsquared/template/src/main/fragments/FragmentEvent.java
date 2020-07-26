@@ -35,7 +35,7 @@ public class FragmentEvent extends BaseFragment implements MainActivityView, OnB
     public FragmentEvent(MainNavigationActivity mainNavigationActivity) {
         this.mainNavigationActivity = mainNavigationActivity;
     }
-
+    EventRecyclerAdapter eventRecyclerAdapter;
     RecyclerView rv_event;
     ArrayList<EventResponse.Result> mList;
     ImageButton mIbtn_back_from_event;
@@ -70,13 +70,21 @@ public class FragmentEvent extends BaseFragment implements MainActivityView, OnB
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(eventRecyclerAdapter != null){
+            eventRecyclerAdapter.removeClickedContent();
+        }
+    }
+
+    @Override
     public void getEvent(EventResponse res) {
         if (res.getCode() == 100) {
             mList = res.getResult();
             Log.e("mList size:", mList.size() + "");
             LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             rv_event.setLayoutManager(manager);
-            EventRecyclerAdapter eventRecyclerAdapter = new EventRecyclerAdapter(mContext, mList, mainNavigationActivity);
+            eventRecyclerAdapter = new EventRecyclerAdapter(mContext, mList, mainNavigationActivity);
             rv_event.setAdapter(eventRecyclerAdapter);
         }
     }

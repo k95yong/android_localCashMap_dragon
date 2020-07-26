@@ -15,17 +15,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.softsquared.template.R;
 import com.softsquared.template.src.BaseActivity;
 import com.softsquared.template.src.main.PreferenceManager;
-import com.softsquared.template.src.main.fragments.FragmentHome;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -33,7 +30,6 @@ import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
 
-// 권한 체크하는 부분 수정 필요!!!
 public class PlaceInfoActivity extends BaseActivity {
     ImageButton mIbtn_back_to_main, mIbtn_regitst_my_place, mIbtn_share_place;
     LinearLayout mLl_call_to_place;
@@ -179,6 +175,7 @@ public class PlaceInfoActivity extends BaseActivity {
         mapView.zoomIn(true);
         setDaumMapCurrentMarker_my_location(latitude, longitude, title);
     }
+
     public void setDaumMapCurrentMarker_my_location(double lat, double lon, String name) {
         MapPOIItem current_location;
         current_location = new MapPOIItem();
@@ -189,11 +186,6 @@ public class PlaceInfoActivity extends BaseActivity {
         current_location.setCustomImageResourceId(R.drawable.marker_3);
         current_location.setCustomImageAutoscale(false);
         current_location.setCustomImageAnchor(0.5f, 1.0f);
-
-//        current_location.setCustomImageAutoscale(false);
-//        current_location.setCustomImageAnchor(0.5f, 0.5f);
-//        current_location.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-//        current_location.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
         mapView.addPOIItem(current_location);
     }

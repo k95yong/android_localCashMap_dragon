@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.softsquared.template.R;
 import com.softsquared.template.src.main.activities.MainNavigationActivity;
+import com.softsquared.template.src.main.fragments.FragmentEvent;
 import com.softsquared.template.src.main.fragments.FragmentEventContent;
 import com.softsquared.template.src.main.models.EventResponse;
 
@@ -21,7 +22,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     private ArrayList<EventResponse.Result> mList = null;
     Context mContext;
     MainNavigationActivity mainNavigationActivity;
-
+    FragmentEventContent clickedContent;
     public EventRecyclerAdapter(Context mContext, ArrayList<EventResponse.Result> mList, MainNavigationActivity mainNavigationActivity) {
         this.mList = mList;
         this.mContext = mContext;
@@ -38,6 +39,12 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         return vh;
     }
 
+    public void removeClickedContent(){
+        if(clickedContent!=null){
+            clickedContent.removeContent();
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull EventRecyclerAdapter.ViewHolder holder, final int position) {
         EventResponse.Result item = mList.get(position);
@@ -50,7 +57,10 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             public void onClick(View v) {
                 int cur_event_number = mList.get(position).getNo();
                 mainNavigationActivity.transaction = mainNavigationActivity.fragmentManager.beginTransaction();
-                mainNavigationActivity.transaction.replace(R.id.main_frame_layout, new FragmentEventContent(mainNavigationActivity, cur_event_number)).commitAllowingStateLoss();
+                clickedContent = new FragmentEventContent(mainNavigationActivity, cur_event_number);
+                mainNavigationActivity.transaction.add(R.id.main_frame_layout, clickedContent).commit();
+
+                mainNavigationActivity.setOnBackPressedListener(clickedContent);
             }
         });
     }

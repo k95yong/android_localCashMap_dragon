@@ -101,8 +101,8 @@ public class PopDialog extends Dialog implements MainActivityView {
         if (res.getCode() == 100) {
 
             String content = res.getResult().getImage();
-
-            Glide.with(context).load(content).override(800, 800).into(mIv_event_content);
+//            Glide.with(context).load(content).override(800, 800).into(mIv_event_content);
+            Glide.with(context).load(content).into(mIv_event_content);
         }
     }
 }

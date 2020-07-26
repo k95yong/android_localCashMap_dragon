@@ -32,7 +32,6 @@ public class BookmarkRecyclerAdapter extends RecyclerView.Adapter<BookmarkRecycl
     public BookmarkRecyclerAdapter(Context context, ArrayList<BaseActivity.Place> list) {
         this.context = context;
         this.mList = list;
-        Log.e("mListSize in adapter", " :" + mList.size());
     }
 
     @NonNull

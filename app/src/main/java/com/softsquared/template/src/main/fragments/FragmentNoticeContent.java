@@ -17,6 +17,7 @@ import com.softsquared.template.src.BaseFragment;
 import com.softsquared.template.src.main.MainService;
 import com.softsquared.template.src.main.activities.MainNavigationActivity;
 import com.softsquared.template.src.main.interfaces.MainActivityView;
+import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
 import com.softsquared.template.src.main.models.CategorySearchResponse;
 import com.softsquared.template.src.main.models.EventContentResponse;
 import com.softsquared.template.src.main.models.EventResponse;
@@ -24,8 +25,9 @@ import com.softsquared.template.src.main.models.NoticeContentResponse;
 import com.softsquared.template.src.main.models.NoticeResponse;
 import com.softsquared.template.src.main.models.StoreSearchResponse;
 
-public class FragmentNoticeContent extends BaseFragment implements MainActivityView {
+public class FragmentNoticeContent extends BaseFragment implements MainActivityView, OnBackPressedListener {
     MainNavigationActivity mainNavigationActivity;
+    FragmentNoticeContent fragmentNoticeContent = this;
     int content_no;
     ViewGroup rootView;
     ImageButton mIbtn_back_from_notice_content;
@@ -47,6 +49,7 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
             @Override
             public void onClick(View v) {
                 bottomNavigationView.setSelectedItemId(R.id.bni_notice);
+                mainNavigationActivity.transaction.remove(fragmentNoticeContent);
             }
         });
 
@@ -108,5 +111,17 @@ public class FragmentNoticeContent extends BaseFragment implements MainActivityV
     @Override
     public void getEventContent(EventContentResponse res) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        bottomNavigationView.setSelectedItemId(R.id.bni_notice);
+        mainNavigationActivity.transaction.remove(fragmentNoticeContent);
+    }
+    public void removeContent(){
+        if(mainNavigationActivity.transaction != null){
+            mainNavigationActivity.transaction.remove(this);
+            Log.e("removeContent", "notice에서 실행됨");
+        }
     }
 }

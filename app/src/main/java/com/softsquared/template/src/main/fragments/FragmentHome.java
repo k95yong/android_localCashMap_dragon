@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -56,10 +58,14 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.INVISIBLE;
+import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.kakao.util.maps.helper.Utility.getPackageInfo;
 
 public class FragmentHome extends BaseFragment implements MainActivityView, MapView.MapViewEventListener, OnBackPressedListener {
     final int RADIUS_CAT = 500;
@@ -106,6 +112,7 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getActivity();
+        Log.e("keyHash",getKeyHash(mContext));
         mainNavigationActivity = (MainNavigationActivity) getActivity();
         mainNavigationActivity.setOnBackPressedListener(this);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
@@ -637,5 +644,21 @@ public class FragmentHome extends BaseFragment implements MainActivityView, MapV
                 ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         }
+    }
+    public static String getKeyHash(final Context context) {
+        PackageInfo packageInfo = getPackageInfo(context, PackageManager.GET_SIGNATURES);
+        if (packageInfo == null)
+            return null;
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+            } catch (NoSuchAlgorithmException e) {
+                Log.w(TAG, "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
+        return null;
     }
 }

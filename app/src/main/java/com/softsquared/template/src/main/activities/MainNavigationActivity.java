@@ -16,9 +16,6 @@ import com.softsquared.template.src.main.fragments.FragmentEvent;
 import com.softsquared.template.src.main.fragments.FragmentHome;
 import com.softsquared.template.src.main.fragments.FragmentNotice;
 import com.softsquared.template.src.main.interfaces.OnBackPressedListener;
-import com.softsquared.template.src.main.models.SearchResult;
-
-import java.util.ArrayList;
 
 public class MainNavigationActivity extends BaseActivity {
     public FragmentManager fragmentManager = getSupportFragmentManager();
@@ -50,91 +47,96 @@ public class MainNavigationActivity extends BaseActivity {
             transaction = fragmentManager.beginTransaction();
             switch (menuItem.getItemId()) {
                 case R.id.bni_bookmark:
-                    if(fragmentBookmark == null){
+                    if (fragmentBookmark == null) {
                         fragmentBookmark = new FragmentBookmark(mainNavigationActivity);
                         transaction.add(R.id.main_frame_layout, fragmentBookmark).commit();
-                    }else{
+                    } else {
                         transaction = fragmentManager.beginTransaction();
                         transaction.show(fragmentBookmark).commit();
                     }
-                    if(fragmentEvent != null){
+                    if (fragmentEvent != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentEvent).commit();
                     }
-                    if(fragmentNotice != null){
+                    if (fragmentNotice != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentNotice).commit();
                     }
-                    if(fragmentHome != null){
+                    if (fragmentHome != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentHome).commit();
                     }
                     mainNavigationActivity.setOnBackPressedListener(fragmentBookmark);
                     break;
                 case R.id.bni_event:
-                    if(fragmentEvent == null){
+                    if (fragmentEvent == null) {
                         fragmentEvent = new FragmentEvent(mainNavigationActivity);
                         transaction.add(R.id.main_frame_layout, fragmentEvent).commit();
-                    }else{
+                    } else {
                         transaction = fragmentManager.beginTransaction();
-                        transaction.show(fragmentEvent).commit();
+                        if (fragmentEvent.isHidden()) {
+                            transaction.show(fragmentEvent).commit();
+                        }
                     }
-                    if(fragmentBookmark != null){
+                    if (fragmentBookmark != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentBookmark).commit();
                     }
-                    if(fragmentNotice != null){
+                    if (fragmentNotice != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentNotice).commit();
                     }
-                    if(fragmentHome != null){
+                    if (fragmentHome != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentHome).commit();
                     }
                     mainNavigationActivity.setOnBackPressedListener(fragmentEvent);
                     break;
                 case R.id.bni_notice:
-                    if(fragmentNotice == null){
+                    if (fragmentNotice == null) {
                         fragmentNotice = new FragmentNotice(mainNavigationActivity);
                         transaction.add(R.id.main_frame_layout, fragmentNotice).commit();
-                    }else{
+                    } else {
                         transaction = fragmentManager.beginTransaction();
-                        transaction.show(fragmentNotice).commit();
+                        if (fragmentNotice.isHidden()) {
+                            transaction.show(fragmentNotice).commit();
+                        }
                     }
-                    if(fragmentBookmark != null){
+                    if (fragmentBookmark != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentBookmark).commit();
                     }
-                    if(fragmentEvent != null){
+                    if (fragmentEvent != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentEvent).commit();
                     }
-                    if(fragmentHome != null){
+                    if (fragmentHome != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentHome).commit();
                     }
                     mainNavigationActivity.setOnBackPressedListener(fragmentNotice);
                     break;
                 case R.id.bni_home:
-                    if(fragmentHome == null){
-                        fragmentHome = new FragmentHome();
-                        transaction.add(R.id.main_frame_layout, fragmentHome).commit();
-                    }else{
-                        transaction = fragmentManager.beginTransaction();
-                        transaction.show(fragmentHome).commit();
-                    }
-                    if(fragmentBookmark != null){
-                        transaction = fragmentManager.beginTransaction();
-                        transaction.hide(fragmentBookmark).commit();
-                    }
-                    if(fragmentEvent != null){
+                    if (fragmentEvent != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentEvent).commit();
                     }
-                    if(fragmentNotice != null){
+                    if (fragmentNotice != null) {
                         transaction = fragmentManager.beginTransaction();
                         transaction.hide(fragmentNotice).commit();
                     }
+                    if (fragmentBookmark != null) {
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.hide(fragmentBookmark).commit();
+                    }
+                    if (fragmentHome == null) {
+                        fragmentHome = new FragmentHome();
+                        transaction.add(R.id.main_frame_layout, fragmentHome).commit();
+                    } else {
+                        transaction = fragmentManager.beginTransaction();
+                        transaction.show(fragmentHome).commit();
+                    }
+
                     mainNavigationActivity.setOnBackPressedListener(fragmentHome);
                     break;
             }

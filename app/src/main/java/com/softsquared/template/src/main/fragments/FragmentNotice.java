@@ -41,6 +41,7 @@ public class FragmentNotice extends BaseFragment implements MainActivityView, On
     MainNavigationActivity mainNavigationActivity;
     ImageButton mIbtn_back_from_notice;
     BottomNavigationView bottomNavigationView;
+    NoticeRecyclerAdapter noticeRecyclerAdapter;
 
     @Nullable
     @Override
@@ -67,13 +68,21 @@ public class FragmentNotice extends BaseFragment implements MainActivityView, On
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(noticeRecyclerAdapter != null){
+            noticeRecyclerAdapter.removeClickedContent();
+        }
+    }
+
+    @Override
     public void getNotice(NoticeResponse res) {
         if (res.getCode() == 100) {
             mList = res.getResult();
             Log.e("mList size:", mList.size() + "");
             LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
             rv_notice.setLayoutManager(manager);
-            NoticeRecyclerAdapter noticeRecyclerAdapter = new NoticeRecyclerAdapter(mContext, mList, mainNavigationActivity);
+            noticeRecyclerAdapter = new NoticeRecyclerAdapter(mContext, mList, mainNavigationActivity);
             rv_notice.setAdapter(noticeRecyclerAdapter);
         }
     }

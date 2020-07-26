@@ -46,13 +46,10 @@ public class SearchedListActivity extends AppCompatActivity {
 
         cat_name = intent.getExtras().getString("cat");
         searchFlag = intent.getExtras().getInt("flag");
-        Log.e("cat:", cat_name + "");
-        Log.e("flag:", searchFlag + "");
 
         if (searchFlag == 1) {
             mList = (ArrayList<SearchResult>) intent.getSerializableExtra("searched_list");
             mList2 = (ArrayList<SearchResult>) intent.getSerializableExtra("searched_list2");
-            Log.e("스토어에서mList size:", mList.size() + "");
         } else if (searchFlag == 0) {
             mList = (ArrayList<SearchResult>) intent.getSerializableExtra("searched_list");
             mList2 = (ArrayList<SearchResult>) intent.getSerializableExtra("searched_list2");

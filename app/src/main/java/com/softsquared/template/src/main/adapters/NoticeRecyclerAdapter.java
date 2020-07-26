@@ -21,7 +21,7 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAd
     private ArrayList<NoticeResponse.Result> mList = null;
     Context mContext;
     MainNavigationActivity mainNavigationActivity;
-
+    FragmentNoticeContent clickedContent;
     public NoticeRecyclerAdapter(Context mContext, ArrayList<NoticeResponse.Result> mList, MainNavigationActivity mainNavigationActivity) {
         this.mList = mList;
         this.mContext = mContext;
@@ -50,7 +50,11 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAd
             public void onClick(View v) {
                 int cur_notice_number = mList.get(position).getNo();
                 mainNavigationActivity.transaction = mainNavigationActivity.fragmentManager.beginTransaction();
-                mainNavigationActivity.transaction.replace(R.id.main_frame_layout, new FragmentNoticeContent(mainNavigationActivity, cur_notice_number)).commitAllowingStateLoss();
+                clickedContent = new FragmentNoticeContent(mainNavigationActivity, cur_notice_number);
+                mainNavigationActivity.transaction.add(R.id.main_frame_layout, clickedContent).commit();
+
+                //리스너 할당 해주면 될듯.
+                mainNavigationActivity.setOnBackPressedListener(clickedContent);
             }
         });
     }
@@ -69,6 +73,11 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAd
             tv_title = itemView.findViewById(R.id.tv_notice_title);
             tv_date = itemView.findViewById(R.id.tv_notice_date);
             ll_notice_button = itemView.findViewById(R.id.ll_notice_button);
+        }
+    }
+    public void removeClickedContent(){
+        if(clickedContent != null){
+            clickedContent.removeContent();
         }
     }
 }

@@ -21,7 +21,6 @@ import com.softsquared.template.src.main.models.StoreSearchResponse;
 
 public class CategoryActivity extends BaseActivity implements MainActivityView {
     ImageButton ibtn_cancel;
-    String mSelectedCategory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

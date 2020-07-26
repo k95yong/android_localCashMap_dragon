@@ -26,7 +26,7 @@ public class CatListRecyclerAdapter extends RecyclerView.Adapter<CatListRecycler
         this.fragmentHome = fragmentHome;
         mList = new ArrayList<>();
         final String str[] = {
-                "음식점", "제과", "약국", "숙박",
+                "음식", "제과", "약국", "숙박",
                 "미용", "의류", "병원", "보험",
                 "기타 의료", "문화", "주유", "유통",
                 "서적", "학원", "사무통신", "자동차판매",

@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".src.main.activities.MainNavigationActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:layout_marginBottom="60dp"
+    android:padding="10dp"
+    >
 
     <RelativeLayout
         android:id="@+id/rl_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
         >
@@ -54,6 +57,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/ll_eventImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/notice_content_back"
@@ -99,19 +103,16 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            >
-
+            android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/iv_event_content_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:scaleType="centerInside" />
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                />
         </ScrollView>
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
